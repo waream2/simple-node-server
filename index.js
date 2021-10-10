@@ -1,38 +1,27 @@
-const http = require('http')
-const url = require('url')
-const fs = require('fs')
+const express = require('express')
+const app = express()
+const path = require('path')
 const port = 3000
 
-http.createServer((req, res) => {
-    const { url } = req;
-    console.log(url)
-    let filename = '';
-
-    if(url === '/') {
-        filename = './index.html'
-    }
-    else if (url === '/about.html') {
-        filename = './about.html'
-    }
-    else if (url === '/contact.html') {
-        filename = './contact.html'
-    } else filename = './404.html'
-
-    fs.readFile(filename, function (err, data) {
-        if (err) {
-          res.writeHead(404, { "Content-Type": "text/html" });
-          // how would i make it so if a file wasn't found to write data from an error/default page. 
-          // this doesnt make sense because in readFile, im passing in a file to be read and then that data
-          // is being written to the page. But how would you catch for a missing file?
-          res.write('There was an error here');
-          return res.end();
-        } else {
-          res.writeHead(200, { "Content-Type": "text/html" });
-          res.write(data);
-          return res.end();
-        }
-      })
-   
-}) .listen(port, () => {
-    console.log('This Server is running real good.')
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'))
+  console.log(path.join(__dirname, '/index.html'))
 });
+
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'contact.html'))
+  console.log(path.join(__dirname, 'contact.html'))
+})
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'))
+  console.log(path.join(__dirname, 'about.html'))
+})
+
+app.use(function (req, res) {
+  res.status(404).sendFile(path.join(__dirname, '404.html'))
+});
+
+app.listen(port, () => {
+  console.log(`your app is running on ${port}`)
+})
