@@ -5,17 +5,14 @@ const port = 3000
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'))
-  console.log(path.join(__dirname, '/index.html'))
 });
 
 app.get('/contact', (req, res) => {
   res.sendFile(path.join(__dirname, 'contact.html'))
-  console.log(path.join(__dirname, 'contact.html'))
 })
 
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, 'about.html'))
-  console.log(path.join(__dirname, 'about.html'))
 })
 
 app.use(function (req, res) {
